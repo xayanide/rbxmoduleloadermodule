@@ -1,7 +1,7 @@
 --!strict
 --[[
-VERSION: v1.0.4
-rbxmoduleloadermodule by xayanide (862645934) @ April 3, 2025 UTC+8
+VERSION: v2.0.0
+rbxmoduleloadermodule by xayanide (862645934) 2025-04-03
 This module is meant to only have simple features with the least overhead and complexity
 ]]
 local RunService = game:GetService("RunService")
@@ -9,12 +9,12 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
 
 export type LoadModulesOptions = {
-    isShared: boolean?,
+    _shared: boolean?,
     targetInstances: { Instance }?,
 }?
 
 local DEFAULT_LOAD_MODULES_OPTIONS = {
-    isShared = true,
+    _shared = true,
 }
 local SETUP_LIFECYCLE_METHOD_NAME = "onModuleSetup"
 local START_LIFECYCLE_METHOD_NAME = "onModuleStart"
@@ -160,8 +160,8 @@ local function getResolvedOptions(options: LoadModulesOptions)
         error("Invalid value passed for 'options'. Must be an table.")
     end
     if options then
-        local isShared = options.isShared
-        options.isShared = if isShared then isShared else DEFAULT_LOAD_MODULES_OPTIONS.isShared
+        local isShared = options._shared
+        options.isShared = if isShared then isShared else DEFAULT_LOAD_MODULES_OPTIONS._shared
         return options
     end
     return DEFAULT_LOAD_MODULES_OPTIONS
@@ -171,7 +171,7 @@ local function loadModules(options: LoadModulesOptions)
     -- Synchronous and Serial.
     local userOptions = getResolvedOptions(options)
     local descendants = getDescendantsForRequire(userOptions.targetInstances)
-    local requiredModules = requireDescendants(descendants, userOptions.isShared)
+    local requiredModules = requireDescendants(descendants, userOptions._shared)
     -- Synchronous and Serial. Anything that yields in the module scripts will block the main execution flow.
     executeDictionaryMethods(requiredModules, SETUP_LIFECYCLE_METHOD_NAME, false)
     -- Asynchronous and Concurrent. Anything that yields in the module scripts will not block the main execution flow.
