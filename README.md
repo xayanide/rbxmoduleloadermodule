@@ -96,10 +96,10 @@ For more information about the design patterns, please see [lifecycle methods](#
 
 The `LoadModulesOptions` allows you to configure the loader's behavior. This can be omitted or passed as an argument to the `rbxmoduleloader` function when you require it.
 
-`isShared` (optional)
+`_shared` (optional)
   - `Type`: boolean?
   - `Default`: true
-  - `Description`: Determines if the loaded modules should be stored in the `shared` dictionary table (accessible globally) or in an isolated local dictionary table (child of `rbxmoduleloader` which is "`ModuleContainer`"). When `isShared` is true, the modules are stored in the global shared table, meaning they can be accessed anywhere in the game depending on the runtime context.
+  - `Description`: Determines if the loaded modules should be stored in the `shared` dictionary table (accessible globally) or in an isolated local dictionary table (child of `rbxmoduleloader` which is "`ModuleContainer`"). When `_shared` is true, the modules are stored in the global shared table, meaning they can be accessed anywhere in the game depending on the runtime context.
 
 **Example Usage:**
 
@@ -110,7 +110,7 @@ The `LoadModulesOptions` allows you to configure the loader's behavior. This can
 ```lua
 local ReplicatedStorageService = game:GetService("ReplicatedStorage")
 local loadModules = require(ReplicatedStorageService.MainModule)
-loadModules({ isShared = true })
+loadModules({ _shared = true })
 ```
 
 `targetInstances` (optional)
