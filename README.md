@@ -19,7 +19,7 @@ A module that loads and executes ModuleScripts from either ServerScriptService o
 
 ## Prerequisites
 
-- Roblox Studio
+- Roblox Studio (https://create.roblox.com/docs/tutorials/curriculums/studio/install-studio)
 
 ## Usage
 
