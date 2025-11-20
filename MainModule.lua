@@ -1,6 +1,6 @@
 --!strict
 --[[
-VERSION: v2.0.1
+VERSION: v2.1.2
 rbxmoduleloadermodule by xayanide (862645934) 2025-04-03
 This module is meant to only have simple features with the least overhead and complexity
 ]]
@@ -28,14 +28,11 @@ local ModuleContainerModuleScript = script.ModuleContainer
 local localDictionary = _require(ModuleContainerModuleScript)
 
 local function executeMethod(methodFn: () -> (), isTaskDeferred: boolean, methodName: string)
-    local function onLifecycleMethodError(err)
-        warn("Encountered error during " .. methodName .. " lifecycle execution:", err)
-    end
     if isTaskDeferred then
-        taskDefer(xpcall, methodFn, onLifecycleMethodError)
+        taskDefer(methodFn)
         return
     end
-    xpcall(methodFn, onLifecycleMethodError)
+    methodFn()
 end
 
 local function getDictionaryMemberValue(dictionary: { [string]: any }, memberName: string)
@@ -61,7 +58,15 @@ end
 
 local function storeModule(descendantName: string, requiredModule: { [string]: any }, isShared: boolean?)
     if isShared then
+        if shared[descendantName] then
+            warn(descendantName .. " is already stored in shared, this module will not be stored")
+            return
+        end
         shared[descendantName] = requiredModule
+        return
+    end
+    if localDictionary[descendantName] then
+        warn(descendantName .. " is already stored in localDictionary, this module will not be stored")
         return
     end
     localDictionary[descendantName] = requiredModule
