@@ -1,6 +1,6 @@
 --!strict
 --[[
-VERSION: v2.0.0
+VERSION: v2.0.1
 rbxmoduleloadermodule by xayanide (862645934) 2025-04-03
 This module is meant to only have simple features with the least overhead and complexity
 ]]
@@ -161,7 +161,7 @@ local function getResolvedOptions(options: LoadModulesOptions)
     end
     if options then
         local isShared = options._shared
-        options.isShared = if isShared then isShared else DEFAULT_LOAD_MODULES_OPTIONS._shared
+        options._shared = if isShared then isShared else DEFAULT_LOAD_MODULES_OPTIONS._shared
         return options
     end
     return DEFAULT_LOAD_MODULES_OPTIONS
