@@ -1,6 +1,6 @@
 --!strict
 --[[
-VERSION: v2.1.2
+VERSION: v2.1.3
 rbxmoduleloadermodule by xayanide (862645934) 2025-04-03
 This module is meant to only have simple features with the least overhead and complexity
 ]]
