@@ -1,6 +1,6 @@
 --!strict
 --[[
-VERSION: v2.1.3
+VERSION: v2.1.4
 rbxmoduleloadermodule by xayanide (862645934) 2025-04-03
 This module is meant to only have simple features with the least overhead and complexity
 ]]
@@ -65,21 +65,10 @@ local function storeModule(descendantName: string, requiredModule: { [string]: a
         return
     end
     if localDictionary[descendantName] then
-            error("Found a duplicate ModuleScript name '" .. descendantName .. "'. ModuleScript names must be unique.")
+        error("Found a duplicate ModuleScript name '" .. descendantName .. "'. ModuleScript names must be unique.")
         return
     end
     localDictionary[descendantName] = requiredModule
-end
-
-local function requireModule(moduleScript: ModuleScript)
-    local function onRequireError(err)
-        warn("Unable to require " .. moduleScript.Name .. ":", err)
-    end
-    local success, value = xpcall(_require, onRequireError, moduleScript)
-    if success == false then
-        return nil
-    end
-    return value
 end
 
 local function requireDescendants(descendants: { Instance }, isShared: boolean?)
@@ -95,7 +84,7 @@ local function requireDescendants(descendants: { Instance }, isShared: boolean?)
         end
         local descendantName = descendant.Name
         if descendant:IsA("ModuleScript") then
-            local descendantModule = requireModule(descendant)
+            local descendantModule = _require(descendant)
             if descendantModule == nil then
                 continue
             end
@@ -112,7 +101,7 @@ local function requireDescendants(descendants: { Instance }, isShared: boolean?)
         if not value:IsA("ModuleScript") then
             continue
         end
-        local valueModule = requireModule(value)
+        local valueModule = _require(value)
         if valueModule == nil then
             continue
         end
