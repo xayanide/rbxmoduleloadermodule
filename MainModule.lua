@@ -59,14 +59,13 @@ end
 local function storeModule(descendantName: string, requiredModule: { [string]: any }, isShared: boolean?)
     if isShared then
         if shared[descendantName] then
-            warn(descendantName .. " is already stored in shared, this module will not be stored")
-            return
+            error("Found a duplicate ModuleScript name '" .. descendantName .. "'. ModuleScript names must be unique.")
         end
         shared[descendantName] = requiredModule
         return
     end
     if localDictionary[descendantName] then
-        warn(descendantName .. " is already stored in localDictionary, this module will not be stored")
+            error("Found a duplicate ModuleScript name '" .. descendantName .. "'. ModuleScript names must be unique.")
         return
     end
     localDictionary[descendantName] = requiredModule
